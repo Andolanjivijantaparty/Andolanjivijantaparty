@@ -5,85 +5,496 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>अंधभक्त जनता पार्टी (AJP) | आधिकारिक वेबसाइट</title>
-<meta name="description" content="अंधभक्त जनता पार्टी (AJP) की आधिकारिक वेबसाइट। पार्टी का परिचय, उद्देश्य, घोषणापत्र, समाचार और संपर्क जानकारी।">
-<meta name="keywords" content="अंधभक्त जनता पार्टी, AJP, Andhbhakt Janta Party, AJP India">
-<meta name="robots" content="index, follow">
+
+<meta name="description" content="अंधभक्त जनता पार्टी (AJP) की आधिकारिक वेबसाइट। पार्टी की जानकारी, उद्देश्य, घोषणापत्र, समाचार और संपर्क।">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
 body{
 font-family:Arial,"Noto Sans Devanagari",sans-serif;
-background:#f6f6f6;color:#171717;line-height:1.7
+background:#f5f5f5;
+color:#111;
+line-height:1.6;
 }
+
 header{
-position:sticky;top:0;z-index:1000;
-background:#080808;color:white;
-padding:10px 5%;
-display:flex;align-items:center;justify-content:space-between;
-box-shadow:0 3px 15px #0005
+background:#050505;
+color:white;
+padding:12px 5%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:15px;
 }
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:58px;height:58px;object-fit:contain;border-radius:50%}
-.brand h2{font-size:20px;line-height:1.2}
-.brand span{color:#ff7200}
-.brand p{font-size:12px;color:#ccc}
-nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center}
-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px}
-nav a:hover{color:#ff7200}
-.join-btn{background:#ff7200;padding:9px 16px;border-radius:6px}
+
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo img{
+width:60px;
+height:60px;
+object-fit:contain;
+border-radius:50%;
+background:white;
+}
+
+.logo h2{
+font-size:20px;
+}
+
+.logo span{
+color:#ff7200;
+}
+
+nav{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#ff7200;
+}
 
 .hero{
-min-height:620px;
-display:flex;align-items:center;justify-content:center;
-text-align:center;color:white;padding:50px 20px;
-background:
-linear-gradient(#000b,#000b),
-linear-gradient(135deg,#200900,#ff7200)
-}
-.hero-content{max-width:950px}
-.hero-logo{
-width:200px;height:200px;object-fit:contain;
-border-radius:50%;background:white;
-border:5px solid #ff7200;margin-bottom:20px
-}
-.hero h1{font-size:55px;line-height:1.2;margin-bottom:10px}
-.orange{color:#ff7200}
-.hero h3{font-size:25px;margin-bottom:8px}
-.hero p{font-size:19px;color:#eee}
-.btn{
-display:inline-block;margin-top:22px;padding:12px 27px;
-background:#ff7200;color:white;text-decoration:none;
-border-radius:6px;font-weight:bold
+background:linear-gradient(135deg,#111,#ff7200);
+color:white;
+text-align:center;
+padding:70px 20px;
 }
 
-section{padding:70px 7%}
-.title{text-align:center;margin-bottom:40px}
-.title h2{
-font-size:34px;display:inline-block;
-border-bottom:4px solid #ff7200;padding-bottom:6px
+.hero img{
+width:210px;
+height:210px;
+object-fit:contain;
+background:white;
+border-radius:50%;
+border:5px solid #ff7200;
 }
-.title p{color:#666;margin-top:8px}
+
+.hero h1{
+font-size:45px;
+margin-top:20px;
+}
+
+.hero h2{
+font-size:25px;
+margin:10px;
+}
+
+.btn{
+display:inline-block;
+background:#050505;
+color:white;
+padding:12px 25px;
+margin-top:20px;
+border-radius:6px;
+text-decoration:none;
+font-weight:bold;
+}
+
+section{
+padding:60px 7%;
+}
+
+.title{
+text-align:center;
+margin-bottom:35px;
+}
+
+.title h2{
+font-size:34px;
+display:inline-block;
+border-bottom:4px solid #ff7200;
+padding-bottom:5px;
+}
 
 .about{
-max-width:1050px;margin:auto;
-display:grid;grid-template-columns:1fr 1.4fr;
-gap:50px;align-items:center
+max-width:1000px;
+margin:auto;
+display:flex;
+align-items:center;
+gap:50px;
 }
-.about img{width:330px;max-width:100%;display:block;margin:auto}
-.about h3{font-size:28px;color:#ff7200;margin-bottom:12px}
-.about p{margin-bottom:12px}
+
+.about img{
+width:300px;
+max-width:100%;
+}
+
+.about-text{
+flex:1;
+}
+
+.about-text h3{
+color:#ff7200;
+font-size:28px;
+margin-bottom:10px;
+}
 
 .cards{
-max-width:1200px;margin:auto;
-display:grid;grid-template-columns:repeat(3,1fr);gap:22px
+max-width:1100px;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
 }
+
 .card{
-background:white;padding:28px 22px;text-align:center;
-border-radius:10px;border:1px solid #eee;
-box-shadow:0 5px 18px #00000010;
-transition:.2s
+background:white;
+padding:25px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 3px 15px #0002;
 }
-.card:hover{transform:translateY(-4px);border-color:#ff7200}
-.icon{font-size:40px;margin-bottom:8px}
+
 .card h3{
+color:#ff7200;
+margin-bottom:8px;
+}
+
+.icon{
+font-size:40px;
+margin-bottom:8px;
+}
+
+.dark{
+background:#080808;
+color:white;
+}
+
+.dark .card{
+background:#181818;
+}
+
+.news{
+max-width:900px;
+margin:auto;
+}
+
+.news-item{
+background:white;
+padding:20px;
+margin-bottom:15px;
+border-left:5px solid #ff7200;
+box-shadow:0 3px 10px #0001;
+}
+
+.join{
+background:#ff7200;
+color:white;
+text-align:center;
+}
+
+.join h2{
+font-size:38px;
+}
+
+.contact{
+max-width:900px;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.contact-box{
+background:white;
+padding:25px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 3px 12px #0002;
+}
+
+.contact-box h3{
+color:#ff7200;
+}
+
+footer{
+background:#050505;
+color:white;
+text-align:center;
+padding:35px 20px;
+}
+
+footer img{
+width:80px;
+}
+
+@media(max-width:800px){
+
+header{
+justify-content:center;
+}
+
+nav{
+justify-content:center;
+}
+
+.hero h1{
+font-size:32px;
+}
+
+.about{
+flex-direction:column;
+text-align:center;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.contact{
+grid-template-columns:1fr;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<img src="logo.png" alt="AJP Logo">
+
+<div>
+<h2>अंधभक्त <span>जनता पार्टी</span></h2>
+<p>AJP</p>
+</div>
+</div>
+
+<nav>
+<a href="#home">होम</a>
+<a href="#about">हमारे बारे में</a>
+<a href="#purpose">उद्देश्य</a>
+<a href="#manifesto">घोषणापत्र</a>
+<a href="#news">समाचार</a>
+<a href="#contact">संपर्क</a>
+</nav>
+
+</header>
+
+
+<section class="hero" id="home">
+
+<img src="logo.png" alt="अंधभक्त जनता पार्टी लोगो">
+
+<h1>अंधभक्त जनता पार्टी</h1>
+
+<h2>AJP</h2>
+
+<p>आधिकारिक वेबसाइट</p>
+
+<a class="btn" href="#about">हमारे बारे में</a>
+
+</section>
+
+
+<section id="about">
+
+<div class="title">
+<h2>हमारे बारे में</h2>
+</div>
+
+<div class="about">
+
+<img src="logo.png" alt="AJP Logo">
+
+<div class="about-text">
+
+<h3>अंधभक्त जनता पार्टी (AJP)</h3>
+
+<p>
+यह अंधभक्त जनता पार्टी की आधिकारिक वेबसाइट है।
+यहाँ पार्टी से संबंधित जानकारी, उद्देश्य, घोषणापत्र,
+समाचार और संपर्क विवरण उपलब्ध कराए जाएंगे।
+</p>
+
+<p>
+वेबसाइट पर पार्टी की गतिविधियों और आधिकारिक घोषणाओं
+को समय-समय पर अपडेट किया जाएगा।
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="purpose">
+
+<div class="title">
+<h2>हमारे उद्देश्य</h2>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="icon">🎓</div>
+<h3>शिक्षा</h3>
+<p>गुणवत्तापूर्ण और सुलभ शिक्षा से जुड़े विषय।</p>
+</div>
+
+<div class="card">
+<div class="icon">💼</div>
+<h3>रोजगार</h3>
+<p>युवाओं के रोजगार और कौशल विकास से जुड़े विषय।</p>
+</div>
+
+<div class="card">
+<div class="icon">🏥</div>
+<h3>स्वास्थ्य</h3>
+<p>बेहतर और सुलभ स्वास्थ्य सुविधाओं से जुड़े विषय।</p>
+</div>
+
+<div class="card">
+<div class="icon">🌾</div>
+<h3>किसान</h3>
+<p>किसानों से जुड़े मुद्दों और समस्याओं पर ध्यान।</p>
+</div>
+
+<div class="card">
+<div class="icon">👩</div>
+<h3>महिला सशक्तिकरण</h3>
+<p>महिलाओं की सुरक्षा, सम्मान और अवसरों से जुड़े विषय।</p>
+</div>
+
+<div class="card">
+<div class="icon">🏛️</div>
+<h3>सुशासन</h3>
+<p>जवाबदेही और पारदर्शिता को महत्व देना।</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="dark" id="manifesto">
+
+<div class="title">
+<h2>घोषणापत्र</h2>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>शिक्षा</h3>
+<p>शिक्षा की गुणवत्ता और पहुंच को बेहतर बनाने पर ध्यान।</p>
+</div>
+
+<div class="card">
+<h3>रोजगार</h3>
+<p>युवाओं के रोजगार और कौशल विकास पर ध्यान।</p>
+</div>
+
+<div class="card">
+<h3>स्वास्थ्य</h3>
+<p>सुलभ और गुणवत्तापूर्ण स्वास्थ्य सेवाओं पर जोर।</p>
+</div>
+
+<div class="card">
+<h3>पारदर्शिता</h3>
+<p>सार्वजनिक कार्यों में जवाबदेही और पारदर्शिता।</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="news">
+
+<div class="title">
+<h2>समाचार</h2>
+</div>
+
+<div class="news">
+
+<div class="news-item">
+<h3>आधिकारिक वेबसाइट शुरू</h3>
+<p>अंधभक्त जनता पार्टी की आधिकारिक वेबसाइट शुरू की गई है।</p>
+</div>
+
+<div class="news-item">
+<h3>जल्द अपडेट</h3>
+<p>पार्टी की गतिविधियों और कार्यक्रमों की जानकारी यहाँ प्रकाशित की जाएगी।</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="join">
+
+<h2>हमसे जुड़ें</h2>
+
+<p>
+पार्टी से संबंधित जानकारी और गतिविधियों के लिए
+हमारी वेबसाइट से जुड़े रहें।
+</p>
+
+</section>
+
+
+<section id="contact">
+
+<div class="title">
+<h2>संपर्क करें</h2>
+</div>
+
+<div class="contact">
+
+<div class="contact-box">
+<h3>📧 ईमेल</h3>
+<p>जल्द अपडेट किया जाएगा</p>
+</div>
+
+<div class="contact-box">
+<h3>📱 WhatsApp</h3>
+<p>जल्द अपडेट किया जाएगा</p>
+</div>
+
+<div class="contact-box">
+<h3>📍 स्थान</h3>
+<p>भारत</p>
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<img src="logo.png" alt="AJP Logo">
+
+<h3>अंधभक्त जनता पार्टी (AJP)</h3>
+
+<p>आधिकारिक वेबसाइट</p>
+
+<p>© 2026 AJP</p>
+
+</footer>
+
+</body>
+</html>
