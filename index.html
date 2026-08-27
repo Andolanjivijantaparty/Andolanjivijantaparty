@@ -719,16 +719,45 @@ AJP की आधिकारिक वेबसाइट पर आपका �
 
 <form>
 
-<input type="text" placeholder="पूरा नाम" required>
+<form id="partyForm">
 
-<input type="tel" placeholder="मोबाइल नंबर" required>
+<input type="text" id="name" placeholder="पूरा नाम" required>
 
-<input type="text" placeholder="शहर / जिला" required>
+<input type="tel" id="mobile" placeholder="मोबाइल नंबर" required>
 
-<textarea placeholder="आप पार्टी से क्यों जुड़ना चाहते हैं?" rows="4"></textarea>
+<input type="text" id="city" placeholder="शहर" required>
+
+<textarea id="reason" placeholder="आप पार्टी से क्यों जुड़ना चाहते हैं?" rows="4"></textarea>
 
 <button type="submit">Join This Party</button>
 
+</form>
+
+<script>
+document.getElementById("partyForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        mobile: document.getElementById("mobile").value,
+        city: document.getElementById("city").value,
+        reason: document.getElementById("reason").value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbzHSrFatW8NsGzch--r-Ekq9H6u0nWcI-EljTmbHLdnWKzghxdU_z6_xIeOnYQW00fl/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "text/plain"
+        },
+        body: JSON.stringify(data)
+    });
+
+    alert("आपका आवेदन सफलतापूर्वक जमा हो गया है। धन्यवाद!");
+
+    document.getElementById("partyForm").reset();
+});
+</script>
 </form>
 
 </div>
