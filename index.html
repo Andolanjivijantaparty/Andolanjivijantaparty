@@ -408,7 +408,74 @@ footer p{
         grid-template-columns:1fr;
     }
 }
-</style>
+/* JOIN PARTY FORM */
+.join{
+    background:linear-gradient(135deg,#ff7200,#ff1e00);
+    color:white;
+    text-align:center;
+    padding:70px 20px;
+}
+
+.join h2{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.join p{
+    font-size:18px;
+    margin-bottom:25px;
+}
+
+.join form{
+    max-width:850px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.join input,
+.join textarea{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:6px;
+    font-size:15px;
+    outline:none;
+}
+
+.join textarea{
+    grid-column:span 3;
+    min-height:90px;
+    resize:vertical;
+}
+
+.join button{
+    grid-column:span 3;
+    padding:13px;
+    background:#080808;
+    color:white;
+    border:0;
+    border-radius:6px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.join button:hover{
+    background:#222;
+}
+
+@media(max-width:700px){
+    .join form{
+        grid-template-columns:1fr;
+    }
+
+    .join textarea,
+    .join button{
+        grid-column:span 1;
+    }
+}</style>
 </head>
 
 <body>
