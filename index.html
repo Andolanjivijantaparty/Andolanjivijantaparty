@@ -731,7 +731,19 @@ AJP की आधिकारिक वेबसाइट पर आपका �
 
 </form>
 
+<div id="submittedMessage" style="display:none; margin-top:15px; font-size:18px; font-weight:bold;">
+    Submitted Successfully! ✅
+</div>
+
 <iframe name="submitFrame" style="display:none;"></iframe>
+
+    <script>
+document.querySelector('form').addEventListener('submit', function() {
+    setTimeout(function() {
+        document.getElementById('submittedMessage').style.display = 'block';
+    }, 300);
+});
+</script>
 
 </div>
 
