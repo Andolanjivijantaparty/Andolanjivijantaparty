@@ -739,15 +739,17 @@ AJP की आधिकारिक वेबसाइट पर आपका �
 
 <script>
 document.querySelector('form').addEventListener('submit', function() {
-    const form = this;
-
     setTimeout(function() {
-        form.reset();
-        document.getElementById('submittedMessage').style.display = 'block';
-    }, 500);
+        const message = document.getElementById('submittedMessage');
+        message.style.display = 'block';
+
+        setTimeout(function() {
+            message.style.display = 'none';
+        }, 4000);
+
+    }, 300);
 });
 </script>
-
 </div>
 
 </section>
