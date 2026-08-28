@@ -717,7 +717,7 @@ AJP की आधिकारिक वेबसाइट पर आपका �
 
 <div class="join-form">
 
-<form action="https://script.google.com/macros/s/AKfycbyWoQi5hGSMD7sZQYmcfm2IFuJN_bdCNpphULzNRJ0TcVFG56mcCjtyZ1k8p-hgQ_8n/exec" method="POST" target="submitFrame" onsubmit="this.reset();">
+<form action="https://script.google.com/macros/s/AKfycbyWoQi5hGSMD7sZQYmcfm2IFuJN_bdCNpphULzNRJ0TcVFG56mcCjtyZ1k8p-hgQ_8n/exec" method="POST" target="submitFrame">
 
 <input type="text" name="name" placeholder="पूरा नाम" required>
 
@@ -738,14 +738,27 @@ AJP की आधिकारिक वेबसाइट पर आपका �
 <iframe name="submitFrame" style="display:none;"></iframe>
 
 <script>
-document.querySelector('form').addEventListener('submit', function() {
+const partyForm = document.querySelector('#join form');
+const submittedMessage = document.getElementById('submittedMessage');
+
+partyForm.addEventListener('submit', function() {
+
     setTimeout(function() {
-        document.getElementById('submittedMessage').style.display = 'block';
-    }, 300);
+        partyForm.reset();
+        submittedMessage.style.display = 'block';
+
+        setTimeout(function() {
+            submittedMessage.style.display = 'none';
+        }, 4000);
+
+    }, 500);
+
 });
 </script>
-    
+
 </div>
+
+</section>
 
 </section>
 <!-- CONTACT -->
