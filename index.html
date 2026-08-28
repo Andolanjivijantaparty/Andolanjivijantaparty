@@ -737,11 +737,14 @@ AJP की आधिकारिक वेबसाइट पर आपका �
 
 <iframe name="submitFrame" style="display:none;"></iframe>
 
-    <script>
+<script>
 document.querySelector('form').addEventListener('submit', function() {
+    const form = this;
+
     setTimeout(function() {
+        form.reset();
         document.getElementById('submittedMessage').style.display = 'block';
-    }, 300);
+    }, 500);
 });
 </script>
 
