@@ -775,47 +775,46 @@ partyForm.addEventListener('submit', function() {
 </div>
 
 <script>
-fetch("https://script.google.com/macros/s/AKfycbyWoQi5hGSMD7sZQYmcfm2IFuJN_bdCNpphULzNRJ0TcVFG56mcCjtyZ1k8p-hgQ_8n/exec")
-.then(response => response.json())
-.then(members => {
+function showMembers(members) {
 
     const memberList = document.getElementById("memberList");
 
-    if (members.length === 0) {
+    if (!members || members.length === 0) {
         memberList.innerHTML = "<p>अभी कोई सदस्य नहीं है।</p>";
         return;
     }
 
     let html = `
-    <table style="width:100%; background:white; border-collapse:collapse; text-align:left;">
-        <tr>
-            <th style="padding:12px; border:1px solid #ddd;">क्रमांक</th>
-            <th style="padding:12px; border:1px solid #ddd;">नाम</th>
-            <th style="padding:12px; border:1px solid #ddd;">शहर</th>
-        </tr>
+        <table style="width:100%; background:white; border-collapse:collapse; text-align:left;">
+            <tr>
+                <th style="padding:12px; border:1px solid #ddd;">क्रमांक</th>
+                <th style="padding:12px; border:1px solid #ddd;">नाम</th>
+                <th style="padding:12px; border:1px solid #ddd;">शहर</th>
+            </tr>
     `;
 
-    members.forEach((member, index) => {
+    members.forEach(function(member, index) {
         html += `
-        <tr>
-            <td style="padding:12px; border:1px solid #ddd;">${index + 1}</td>
-            <td style="padding:12px; border:1px solid #ddd;">${member.name}</td>
-            <td style="padding:12px; border:1px solid #ddd;">${member.city}</td>
-        </tr>
+            <tr>
+                <td style="padding:12px; border:1px solid #ddd;">${index + 1}</td>
+                <td style="padding:12px; border:1px solid #ddd;">${member.name}</td>
+                <td style="padding:12px; border:1px solid #ddd;">${member.city}</td>
+            </tr>
         `;
     });
 
     html += "</table>";
 
     memberList.innerHTML = html;
+}
 
-})
-.catch(error => {
-    document.getElementById("memberList").innerHTML =
-        "<p>Member list load नहीं हो सकी।</p>";
-});
+const script = document.createElement("script");
+
+script.src =
+"https://script.google.com/macros/s/AKfycbyWoQi5hGSMD7sZQYmcfm2IFuJN_bdCNpphULzNRJ0TcVFG56mcCjtyZ1k8p-hgQ_8n/exec?callback=showMembers";
+
+document.body.appendChild(script);
 </script>
-
 </section><!-- CONTACT -->
 <section id="contact">
 
