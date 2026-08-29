@@ -511,7 +511,86 @@ body{
 }
 
 /* इसके बाद */
-</style>}</style>
+/* ===== NOTICE BOARD DESIGN ===== */
+
+#notice{
+    background:#f7f7f7;
+}
+
+.notice-container{
+    max-width:950px;
+    margin:auto;
+    display:grid;
+    gap:20px;
+}
+
+.notice-card{
+    background:#ffffff;
+    padding:25px;
+    border-radius:18px;
+    border-left:7px solid #ff7200;
+    box-shadow:0 8px 22px rgba(0,0,0,.10);
+    transition:.3s;
+}
+
+.notice-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 14px 30px rgba(0,0,0,.16);
+}
+
+.notice-date{
+    display:inline-block;
+    padding:6px 14px;
+    margin-bottom:12px;
+    background:#fff0e3;
+    color:#d85e00;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.notice-card h3{
+    font-size:23px;
+    margin-bottom:8px;
+    color:#111;
+}
+
+.notice-card p{
+    font-size:16px;
+    color:#555;
+    white-space:pre-line;
+}
+
+.notice-loading,
+.notice-empty{
+    background:white;
+    padding:25px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+/* MOBILE */
+@media(max-width:700px){
+
+    #notice{
+        padding:45px 18px;
+    }
+
+    .notice-card{
+        padding:18px;
+        border-left-width:5px;
+        border-radius:14px;
+    }
+
+    .notice-card h3{
+        font-size:19px;
+    }
+
+    .notice-card p{
+        font-size:15px;
+    }
+}</style>}</style>
 </head>
 
 <body>
