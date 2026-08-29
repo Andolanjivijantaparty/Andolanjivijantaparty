@@ -535,7 +535,7 @@ body{
 <a href="#about">परिचय</a>
 <a href="#purpose">उद्देश्य</a>
 <a href="#manifesto">घोषणापत्र</a>
-<a href="#news">समाचार</a>
+<a href="#notice">सूचना</a>
 <a href="#members">सदस्य सूची</a>
 <a href="#contact">संपर्क</a>
 <a class="join-button" href="#join">हमसे जुड़ें</a>
@@ -702,47 +702,63 @@ body{
 </section>
 
 
-<!-- NEWS -->
-<section id="news">
+<!-- NOTICE -->
+<section id="notice">
 
 <div class="section-title">
-<h2>समाचार एवं अपडेट</h2>
-<p>पार्टी की आधिकारिक जानकारी</p>
+<h2>सूचना</h2>
+<p>पार्टी की आधिकारिक सूचनाएं एवं महत्वपूर्ण अपडेट</p>
 </div>
 
-<div class="news">
-
-<div class="news-item">
-<div class="news-date">आधिकारिक अपडेट</div>
-<h3>अंधभक्त जनता पार्टी की वेबसाइट शुरू</h3>
-<p>
-AJP की आधिकारिक वेबसाइट पर आपका स्वागत है।
-पार्टी से संबंधित महत्वपूर्ण जानकारी यहां उपलब्ध होगी।
-</p>
-</div>
-
-<div class="news-item">
-<div class="news-date">जल्द अपडेट</div>
-<h3>आगामी कार्यक्रम</h3>
-<p>
-पार्टी के आगामी कार्यक्रम और गतिविधियों की जानकारी
-इस section में प्रकाशित की जाएगी।
-</p>
-</div>
-
-<div class="news-item">
-<div class="news-date">जल्द अपडेट</div>
-<h3>आधिकारिक घोषणाएं</h3>
-<p>
-पार्टी की महत्वपूर्ण घोषणाएं और सूचनाएं यहां प्रकाशित होंगी।
-</p>
-</div>
-
+<div class="notice-container" id="noticeList">
+सूचनाएं लोड हो रही हैं...
 </div>
 
 </section>
 
+<script>
 
+function showNotices(notices) {
+
+    const noticeList = document.getElementById("noticeList");
+
+    if (!notices || notices.length === 0) {
+        noticeList.innerHTML = "अभी कोई सूचना उपलब्ध नहीं है।";
+        return;
+    }
+
+    let html = "";
+
+    notices.forEach(function(notice) {
+
+        html += `
+        <div class="notice-card">
+
+            <div class="notice-date">
+                📅 ${notice.date || ""}
+            </div>
+
+            <h3>📢 ${notice.title || ""}</h3>
+
+            <p>${notice.message || ""}</p>
+
+        </div>
+        `;
+
+    });
+
+    noticeList.innerHTML = html;
+}
+
+
+const noticeScript = document.createElement("script");
+
+noticeScript.src =
+"https://script.google.com/macros/s/AKfycbwN6TJxhrmxloR7XNOtOpM49g6UmgHIvfV9BKZGeWp0k4ZuGdwD_JZPpIKTtHfAJGGh/exec?type=notices&callback=showNotices";
+
+document.body.appendChild(noticeScript);
+
+</script>
 <!-- JOIN -->
 <section class="join" id="join">
 
