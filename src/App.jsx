@@ -10,7 +10,7 @@ import { AuthProvider } from './contexts/AuthContext';
 function App() {
     return (
         <AuthProvider>
-            <Router basename="/Andolanjivijantaparty">
+            <Router basename={import.meta.env.BASE_URL}>
                 <ScrollToTop />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
