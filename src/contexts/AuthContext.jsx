@@ -1,30 +1,60 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import pb from '@/lib/pocketbaseClient';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(pb.authStore.record);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('adminUser');
 
-    useEffect(() => pb.authStore.onChange((_token, record) => setUser(record)), []);
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
-    const value = useMemo(
-        () => ({
-            user,
-            isAuthed: pb.authStore.isValid,
-            login: (email, password) => pb.collection('users').authWithPassword(email, password),
-            signup: async (email, password, extraFields = {}) => {
-                await pb.collection('users').create({ email, password, passwordConfirm: password, ...extraFields });
+  const value = useMemo(
+    () => ({
+      user,
 
-                return pb.collection('users').authWithPassword(email, password);
-            },
-            logout: () => pb.authStore.clear(),
-        }),
-        [user],
-    );
+      isAuthed: !!user,
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+      login: async (username, password) => {
+        const ADMIN_USERNAME = 'Admin@123';
+        const ADMIN_PASSWORD = 'Ajjp@123';
+
+        if (
+          username === ADMIN_USERNAME &&
+          password === ADMIN_PASSWORD
+        ) {
+          const adminUser = {
+            username: ADMIN_USERNAME,
+            role: 'admin',
+          };
+
+          localStorage.setItem(
+            'adminUser',
+            JSON.stringify(adminUser)
+          );
+
+          setUser(adminUser);
+
+          return true;
+        }
+
+        throw new Error('Invalid username or password');
+      },
+
+      logout: () => {
+        localStorage.removeItem('adminUser');
+        setUser(null);
+      },
+    }),
+    [user]
+  );
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export const useAuth = () => useContext(AuthContext);
 
