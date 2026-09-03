@@ -549,7 +549,7 @@ export default function AdminPage() {
 
             <p className="text-xs text-muted-foreground">
 
-              {user?.email || ''}
+              {user?.username || ''}
 
             </p>
 
