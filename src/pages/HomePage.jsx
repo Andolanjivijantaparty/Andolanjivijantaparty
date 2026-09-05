@@ -14,6 +14,17 @@ const HERO_IMG = 'https://images.hostinger.com/c11593ad-9d7e-43a5-bbec-53e3f1e7a
 const ABOUT_IMG = 'https://images.hostinger.com/a6772500-1575-4c0f-9523-4ca4d1a67f3e.png';
 const VOICE_IMG = 'https://images.hostinger.com/44ec7380-cab7-4f90-9f41-135471670cac.png';
 const MARQUEE_ITEMS = ['जनता की आवाज़', 'पारदर्शिता', 'जवाबदेही', 'शिक्षा', 'स्वास्थ्य', 'रोज़गार', 'किसान कल्याण', 'जन-भागीदारी'];
+
+const scrollToSection = (id) => {
+  const element = document.getElementById(id);
+
+  if (element) {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+};
 const OBJECTIVES = [{
   num: '०१',
   title: 'जनता तक सत्ता',
@@ -1210,13 +1221,13 @@ export default function HomePage() {
                     <Reveal delay={0.3}>
                         <div className="mt-8 flex flex-wrap items-center gap-4">
                             <Button asChild size="lg" className="h-12 px-8 text-base font-bold active:scale-[0.98]">
-                                <a href="#join">
+                                <a href="#join" onClick={(e) => { e.preventDefault(); scrollToSection('join'); }}>
                                     <Users className="mr-2 h-5 w-5" />
                                     हमसे जुड़ें
                                 </a>
                             </Button>
                             <Button asChild size="lg" variant="outline" className="h-12 border-background/40 bg-transparent px-8 text-base font-semibold text-background hover:bg-background/10 hover:text-background">
-                                <a href="#ideology">
+                                <a href="#ideology" onClick={(e) => { e.preventDefault(); scrollToSection('ideology'); }}>
                                     हमारी विचारधारा
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </a>
@@ -1480,7 +1491,7 @@ export default function HomePage() {
                         <div className="mt-10 flex flex-col items-center justify-between gap-4 rounded-lg bg-primary px-6 py-8 text-center sm:flex-row sm:text-left">
                             <p className="font-display text-xl text-primary-foreground sm:text-2xl">बदलाव की शुरुआत आपसे होती है — आज ही जुड़ें।</p>
                             <Button asChild size="lg" variant="secondary" className="shrink-0 font-bold">
-                                <a href="#join">
+                                <a href="#join" onClick={(e) => { e.preventDefault(); scrollToSection('join'); }}>
                                     सदस्य बनें
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </a>
