@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, Users, MessageSquare } from 'lucide-react';
+import { Menu, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import {
+    Sheet,
+    SheetContent,
+    SheetTrigger,
+    SheetClose
+} from '@/components/ui/sheet';
 
 export const NAV_ITEMS = [
     { href: '#home', label: 'मुख्य पृष्ठ' },
@@ -17,12 +22,18 @@ export const NAV_ITEMS = [
 
 const scrollToSection = (href) => {
     const id = href.replace('#', '');
+
     const element = document.getElementById(id);
 
     if (element) {
-        element.scrollIntoView({
+        const headerOffset = 80;
+
+        const elementPosition =
+            element.getBoundingClientRect().top + window.pageYOffset;
+
+        window.scrollTo({
+            top: elementPosition - headerOffset,
             behavior: 'smooth',
-            block: 'start',
         });
     }
 };
@@ -46,6 +57,7 @@ export function PartyLogo({ compact = false }) {
                     <span className="block font-display text-base text-foreground sm:text-lg">
                         आंदोलन जीवि जनता पार्टी
                     </span>
+
                     <span className="block text-xs font-semibold tracking-wide text-primary">
                         जनता की आवाज़ • जनता का आंदोलन
                     </span>
@@ -65,7 +77,9 @@ export default function Header() {
 
         onScroll();
 
-        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('scroll', onScroll, {
+            passive: true,
+        });
 
         return () => {
             window.removeEventListener('scroll', onScroll);
@@ -98,7 +112,9 @@ export default function Header() {
                         <a
                             key={`${item.href}-${item.label}`}
                             href={item.href}
-                            onClick={(e) => handleNavigation(e, item.href)}
+                            onClick={(e) =>
+                                handleNavigation(e, item.href)
+                            }
                             className="rounded-md px-3 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
                         >
                             {item.label}
@@ -113,7 +129,9 @@ export default function Header() {
                     >
                         <a
                             href="#join"
-                            onClick={(e) => handleNavigation(e, '#join')}
+                            onClick={(e) =>
+                                handleNavigation(e, '#join')
+                            }
                         >
                             <Users className="mr-2 h-4 w-4" />
                             हमसे जुड़ें
@@ -132,14 +150,23 @@ export default function Header() {
                             </Button>
                         </SheetTrigger>
 
-                        <SheetContent side="right" className="w-72 bg-background">
+                        <SheetContent
+                            side="right"
+                            className="w-72 bg-background"
+                        >
                             <div className="mt-6 flex flex-col gap-1">
                                 {NAV_ITEMS.map((item) => (
-                                    <SheetClose asChild key={`${item.href}-${item.label}`}>
+                                    <SheetClose
+                                        asChild
+                                        key={`${item.href}-${item.label}`}
+                                    >
                                         <a
                                             href={item.href}
                                             onClick={(e) =>
-                                                handleNavigation(e, item.href)
+                                                handleNavigation(
+                                                    e,
+                                                    item.href
+                                                )
                                             }
                                             className="rounded-md px-3 py-3 text-base font-semibold text-foreground/85 transition-colors hover:bg-secondary"
                                         >
@@ -156,7 +183,10 @@ export default function Header() {
                                         <a
                                             href="#join"
                                             onClick={(e) =>
-                                                handleNavigation(e, '#join')
+                                                handleNavigation(
+                                                    e,
+                                                    '#join'
+                                                )
                                             }
                                         >
                                             <Users className="mr-2 h-4 w-4" />
