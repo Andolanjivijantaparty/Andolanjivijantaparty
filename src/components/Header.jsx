@@ -10,7 +10,7 @@ export const NAV_ITEMS = [
     { href: '#ideology', label: 'विचारधारा' },
     { href: '#issues', label: 'मुद्दे' },
     { href: '#voice', label: 'जनता की आवाज़' },
-    { href: '#news', label: 'समाचार' },
+    { href: '#notice', label: 'सूचना' },
     { href: '#contact', label: 'संपर्क' },
 ];
 
