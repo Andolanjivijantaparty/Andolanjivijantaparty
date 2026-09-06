@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/dialog';
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbxvgb7W5O40WpOQiAet-ZC3lUPEWz3MD47YVBPV2KGvmYT5NNjV8iNRNMxw-tjYptkx/exec';
+  'https://script.google.com/macros/s/AKfycbwahE9tHqsiM_vlcj6XvpWe_ewnO5kUvw3NPbgE3qXAMyF32eeq8EVFivRktajn_QPy/exec';
 
 
 function formatDate(value) {
