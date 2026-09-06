@@ -1494,18 +1494,18 @@ export default function HomePage() {
             <section id="contact" className="scroll-mt-24 py-20 sm:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6">
                     <Reveal>
-                        <SectionHeading kicker="संपर्क करें" title="हम एक संदेश की दूरी पर हैं" />
+                        <SectionHeading kicker="संपर्क करें" title="contact me" />
                     </Reveal>
                     <div className="grid gap-6 sm:grid-cols-3">
                         {[{
             title: 'केन्द्रीय कार्यालय',
-            lines: ['आंदोलन जीवि जनता पार्टी', 'नई दिल्ली, भारत — 110001']
+            lines: ['आंदोलन जीवि जनता पार्टी', 'Lucknow, Uttar Pradesh — 226020']
           }, {
             title: 'फोन',
-            lines: ['+91 98XXXXXX00', 'सुबह 10 बजे — शाम 6 बजे']
+            lines: ['+91 not showing', 'सुबह 10 बजे — शाम 6 बजे']
           }, {
             title: 'ईमेल',
-            lines: ['sampark@andolanjivijantaparty.in', 'media@andolanjivijantaparty.in']
+            lines: ['andolanjivijantaparty@gmail.com', 'media@andolanjivijantaparty.in']
           }].map((c, i) => <Reveal key={c.title} delay={i * 0.08}>
                                 <div className="h-full rounded-lg border border-border bg-card p-6 shadow-sm">
                                     <h3 className="font-display text-lg text-primary">{c.title}</h3>
@@ -1529,7 +1529,7 @@ export default function HomePage() {
 
                     <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:items-start">
                         <Reveal>
-                            <h3 className="font-display text-2xl text-foreground">हमें लिखें</h3>
+                            <h3 className="font-display text-2xl text-foreground">हमें संदेश लिखें</h3>
                             <p className="mt-3 max-w-md leading-relaxed text-muted-foreground">
                                 अपने सुझाव, शिकायत या सहयोग की बात हमसे साझा करें। आपका हर संदेश सीधे पार्टी के व्यवस्थापक तक पहुँचता है।
                             </p>
