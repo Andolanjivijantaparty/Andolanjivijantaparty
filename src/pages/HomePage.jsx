@@ -129,13 +129,26 @@ function SectionHeading({
             <div className="tricolor-bar mt-4 h-1 w-24 rounded-full" />
         </div>;
 }
+const NOTICE_API_URL =
+  'https://script.google.com/macros/s/AKfycbxvgb7W5O40WpOQiAet-ZC3lUPEWz3MD47YVBPV2KGvmYT5NNjV8iNRNMxw-tjYptkx/exec';
+
 export default function HomePage() {
   const [newsItems, setNewsItems] = useState([]);
+  const [notices, setNotices] = useState([]);
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     pb.collection('news').getFullList({ sort: '-created' }).then(setNewsItems).catch(() => {});
     pb.collection('gallery_photos').getFullList({ sort: '-created' }).then(setPhotos).catch(() => {});
+
+    fetch(`${NOTICE_API_URL}?action=getNotices`)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success && Array.isArray(result.notices)) {
+          setNotices(result.notices);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const photoUrl = (rec) => (rec?.image ? pb.files.getURL(rec, rec.image) : '');
@@ -1432,6 +1445,63 @@ export default function HomePage() {
                             </div>
                         </div>
                     </Reveal>
+                </div>
+            </section>
+
+            {/* NOTICE */}
+            <section id="notice" className="scroll-mt-24 bg-secondary/30 py-20 sm:py-28">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6">
+                    <Reveal>
+                        <SectionHeading kicker="सूचना" title="पार्टी की महत्वपूर्ण सूचनाएँ" />
+                    </Reveal>
+
+                    <div className="divide-y divide-border border-y border-border">
+                        {notices.length === 0 ? (
+                            <p className="py-10 text-center text-muted-foreground">
+                                अभी कोई सूचना नहीं है।
+                            </p>
+                        ) : (
+                            notices.map((notice, i) => (
+                                <Reveal key={notice.id || `${notice.title}-${i}`} delay={i * 0.06}>
+                                    <article className="grid gap-4 py-6 transition-colors hover:bg-background sm:grid-cols-[180px_1fr] sm:gap-8">
+                                        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground sm:flex-col sm:items-start sm:gap-1">
+                                            {notice.date && (
+                                                <span className="inline-flex items-center gap-1.5">
+                                                    <CalendarDays className="h-4 w-4 text-primary" />
+                                                    {notice.date}
+                                                </span>
+                                            )}
+                                            {notice.tag && (
+                                                <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent">
+                                                    {notice.tag}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <h3 className="text-lg font-bold leading-snug">
+                                                {notice.title}
+                                            </h3>
+
+                                            {notice.description && (
+                                                <p className="whitespace-pre-line leading-relaxed text-muted-foreground">
+                                                    {notice.description}
+                                                </p>
+                                            )}
+
+                                            {notice.imageUrl && (
+                                                <img
+                                                    src={notice.imageUrl}
+                                                    alt={notice.title || 'सूचना'}
+                                                    className="mt-3 max-h-72 w-full rounded-lg object-cover"
+                                                />
+                                            )}
+                                        </div>
+                                    </article>
+                                </Reveal>
+                            ))
+                        )}
+                    </div>
                 </div>
             </section>
 
