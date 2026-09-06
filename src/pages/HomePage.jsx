@@ -1406,48 +1406,6 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* NEWS */}
-            <section id="news" className="scroll-mt-24 py-20 sm:py-28">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6">
-                    <Reveal>
-                        <SectionHeading kicker="समाचार एवं अपडेट" title="आंदोलन की ताज़ा ख़बरें" />
-                    </Reveal>
-                    <div className="divide-y divide-border border-y border-border">
-                        {newsItems.length === 0 ? <p className="py-10 text-center text-muted-foreground">अभी कोई समाचार नहीं है।</p> : newsItems.map((n, i) => <Reveal key={n.id} delay={i * 0.06}>
-                                <article className="grid gap-3 py-6 transition-colors hover:bg-secondary/50 sm:grid-cols-[180px_1fr] sm:gap-8">
-                                    <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground sm:flex-col sm:items-start sm:gap-1">
-                                        <span className="inline-flex items-center gap-1.5">
-                                            <CalendarDays className="h-4 w-4 text-primary" />
-                                            {n.date}
-                                        </span>
-                                        {n.tag && <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-bold text-accent">{n.tag}</span>}
-                                    </div>
-                                    <div className="space-y-2">
-                                        <h3 className="text-lg font-bold leading-snug">{n.title}</h3>
-                                        {n.description && <p className="leading-relaxed text-muted-foreground">{n.description}</p>}
-                                        {n.image && <img src={photoUrl(n)} alt={n.title} className="mt-2 max-h-72 w-full rounded-lg object-cover" />}
-                                    </div>
-                                </article>
-                            </Reveal>)}
-                    </div>
-
-                    {/* Media gallery placeholders */}
-                    <Reveal delay={0.1}>
-                        <div className="mt-12">
-                            <h3 className="mb-5 font-display text-xl">फोटो / वीडियो गैलरी</h3>
-                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                                {photos.length === 0 ? <p className="col-span-full py-10 text-center text-muted-foreground">अभी कोई फोटो नहीं है।</p> : photos.map((p) => (
-                                    <figure key={p.id} className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-                                        <img src={photoUrl(p)} alt={p.caption || ''} className="aspect-[4/3] w-full object-cover" />
-                                        {p.caption && <figcaption className="line-clamp-2 px-2 py-1.5 text-xs font-semibold text-foreground">{p.caption}</figcaption>}
-                                    </figure>
-                                ))}
-                            </div>
-                        </div>
-                    </Reveal>
-                </div>
-            </section>
-
             {/* NOTICE */}
             <section id="notice" className="scroll-mt-24 bg-secondary/30 py-20 sm:py-28">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6">
