@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, Users } from 'lucide-react';
+import { Menu, Users, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
@@ -12,6 +12,7 @@ export const NAV_ITEMS = [
     { href: '#voice', label: 'जनता की आवाज़' },
     { href: '#notice', label: 'सूचना' },
     { href: '#contact', label: 'संपर्क' },
+    { href: '#contact', label: 'हमें संदेश लिखें' },
 ];
 
 const scrollToSection = (href) => {
@@ -95,7 +96,7 @@ export default function Header() {
                 >
                     {NAV_ITEMS.map((item) => (
                         <a
-                            key={item.href}
+                            key={`${item.href}-${item.label}`}
                             href={item.href}
                             onClick={(e) => handleNavigation(e, item.href)}
                             className="rounded-md px-3 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
@@ -134,7 +135,7 @@ export default function Header() {
                         <SheetContent side="right" className="w-72 bg-background">
                             <div className="mt-6 flex flex-col gap-1">
                                 {NAV_ITEMS.map((item) => (
-                                    <SheetClose asChild key={item.href}>
+                                    <SheetClose asChild key={`${item.href}-${item.label}`}>
                                         <a
                                             href={item.href}
                                             onClick={(e) =>
