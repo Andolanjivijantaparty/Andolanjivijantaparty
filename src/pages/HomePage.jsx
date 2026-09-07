@@ -160,8 +160,17 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  const photoUrl = (rec) =>
-    rec?.imageUrl || (rec?.image ? pb.files.getURL(rec, rec.image) : '');
+  const photoUrl = (rec) => {
+    if (rec?.imageUrl) {
+      const match = String(rec.imageUrl).match(/[?&]id=([^&]+)/);
+      if (match?.[1]) {
+        return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1600`;
+      }
+      return rec.imageUrl;
+    }
+
+    return rec?.image ? pb.files.getURL(rec, rec.image) : '';
+  };
 
   return <div className="min-h-screen bg-background text-foreground">
             <Helmet>
