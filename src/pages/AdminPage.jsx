@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/dialog';
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbxvgb7W5O40WpOQiAet-ZC3lUPEWz3MD47YVBPV2KGvmYT5NNjV8iNRNMxw-tjYptkx/exec';
+  'https://script.google.com/macros/s/AKfycbwahE9tHqsiM_vlcj6XvpWe_ewnO5kUvw3NPbgE3qXAMyF32eeq8EVFivRktajn_QPy/exec';
 
 
 function formatDate(value) {
@@ -639,28 +639,19 @@ function GalleryManager() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [caption, setCaption] = useState('');
 
-  const fileInputRef = useRef(null);
-
   const loadGallery = async () => {
     setLoading(true);
     setError('');
 
     try {
-      const response = await fetch(
-        `${API_URL}?action=getGallery`
-      );
-
+      const response = await fetch(`${API_URL}?action=getGallery`);
       const result = await response.json();
 
       if (!result.success) {
         throw new Error(result.message || 'Failed');
       }
 
-      setPhotos(
-        Array.isArray(result.photos)
-          ? result.photos
-          : []
-      );
+      setPhotos(Array.isArray(result.photos) ? result.photos : []);
     } catch (error) {
       console.error(error);
       setError('Gallery लोड नहीं हो पाई।');
@@ -673,27 +664,26 @@ function GalleryManager() {
     loadGallery();
   }, []);
 
-  const readFileAsDataURL = (file) => {
-    return new Promise((resolve, reject) => {
+  const readFileAsDataURL = (file) =>
+    new Promise((resolve, reject) => {
       const reader = new FileReader();
 
       reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
+      reader.onerror = () => reject(new Error('Photo read नहीं हो पाई।'));
 
       reader.readAsDataURL(file);
     });
-  };
 
   const addPhoto = async (e) => {
     e.preventDefault();
 
     if (!selectedFile) {
-      setError('कृपया पहले फोटो चुनें।');
+      setError('कृपया Photo चुनें।');
       return;
     }
 
     if (!selectedFile.type.startsWith('image/')) {
-      setError('कृपया केवल image/photo file चुनें।');
+      setError('कृपया केवल image file चुनें।');
       return;
     }
 
@@ -714,14 +704,15 @@ function GalleryManager() {
       setSelectedFile(null);
       setCaption('');
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      const input = document.getElementById('gallery-photo-input');
+      if (input) {
+        input.value = '';
       }
 
       await loadGallery();
     } catch (error) {
       console.error(error);
-      setError('Photo save नहीं हो पाई।');
+      setError(error.message || 'Photo save नहीं हो पाई।');
     } finally {
       setSaving(false);
     }
@@ -747,7 +738,6 @@ function GalleryManager() {
 
   return (
     <div className="space-y-8">
-
       <div>
         <h2 className="font-display text-2xl text-foreground">
           Photo Gallery
@@ -766,93 +756,83 @@ function GalleryManager() {
 
       <form
         onSubmit={addPhoto}
-        className="space-y-5 rounded-xl border border-border bg-card p-6"
+        className="rounded-xl border border-border bg-card p-5 shadow-sm"
       >
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold">
-            Add Photo *
-          </label>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0] || null;
-              setSelectedFile(file);
-              setError('');
-            }}
-            className="block w-full cursor-pointer rounded-md border border-input bg-background px-3 py-2 text-sm"
-          />
-
-          {selectedFile && (
-            <p className="text-sm text-muted-foreground">
-              Selected: {selectedFile.name}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-semibold">
-            Caption
-          </label>
-
-          <Input
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="फोटो के बारे में कुछ लिखें"
-          />
-        </div>
-
-        <Button
-          type="submit"
-          disabled={saving}
-        >
-          {saving ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Uploading...
-            </>
-          ) : (
-            <>
-              <Plus className="mr-2 h-4 w-4" />
+        <div className="space-y-5">
+          <div>
+            <label
+              htmlFor="gallery-photo-input"
+              className="mb-2 block text-sm font-semibold"
+            >
               Add Photo
-            </>
-          )}
-        </Button>
+            </label>
 
+            <Input
+              id="gallery-photo-input"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setSelectedFile(file);
+                setError('');
+              }}
+              disabled={saving}
+            />
+
+            {selectedFile && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                Selected: {selectedFile.name}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="gallery-caption"
+              className="mb-2 block text-sm font-semibold"
+            >
+              Caption (optional)
+            </label>
+
+            <Input
+              id="gallery-caption"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="Photo caption"
+              disabled={saving}
+            />
+          </div>
+
+          <Button type="submit" disabled={saving || !selectedFile}>
+            {saving ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Uploading...
+              </>
+            ) : (
+              <>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Photo
+              </>
+            )}
+          </Button>
+        </div>
       </form>
 
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold">
-          Gallery Photos
-        </h3>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={loadGallery}
-        >
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Refresh
-        </Button>
-      </div>
-
       {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader2 className="h-7 w-7 animate-spin text-primary" />
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : photos.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border p-10 text-center text-muted-foreground">
-          अभी Gallery में कोई photo नहीं है।
+        <div className="rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
+          अभी कोई photo नहीं है।
         </div>
       ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {photos.map((photo) => (
             <div
               key={photo.id}
-              className="overflow-hidden rounded-xl border border-border bg-card"
+              className="overflow-hidden rounded-xl border border-border bg-card shadow-sm"
             >
               {photo.imageUrl && (
                 <img
@@ -881,7 +861,6 @@ function GalleryManager() {
           ))}
         </div>
       )}
-
     </div>
   );
 }
