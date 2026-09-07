@@ -4,50 +4,7 @@ import { ArrowRight, Briefcase, CalendarDays, GraduationCap, HeartPulse, Landmar
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MembershipForm from '@/components/MembershipForm';
-import 
-            {/* GALLERY */}
-            <section id="gallery" className="scroll-mt-24 bg-muted/30 py-20 sm:py-28">
-              <div className="mx-auto max-w-7xl px-4 sm:px-6">
-                <Reveal>
-                  <SectionHeading kicker="Gallery" title="पार्टी की तस्वीरें" />
-                </Reveal>
-
-                {photos.length > 0 ? (
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {photos.map((photo, index) => {
-                      const url = photoUrl(photo);
-                      if (!url) return null;
-
-                      return (
-                        <Reveal key={photo.id || index} delay={Math.min(index * 0.05, 0.25)}>
-                          <div className="group overflow-hidden rounded-xl border border-border bg-background shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                            <div className="aspect-[4/3] overflow-hidden bg-muted">
-                              <img
-                                src={url}
-                                alt={photo.caption || 'आंदोलन जीवि जनता पार्टी की तस्वीर'}
-                                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                                loading="lazy"
-                              />
-                            </div>
-                            {photo.caption && (
-                              <div className="p-4">
-                                <p className="font-medium text-foreground">{photo.caption}</p>
-                              </div>
-                            )}
-                          </div>
-                        </Reveal>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="rounded-xl border border-dashed border-border bg-background p-10 text-center text-muted-foreground">
-                    अभी Gallery में कोई तस्वीर उपलब्ध नहीं है।
-                  </div>
-                )}
-              </div>
-            </section>
-
-ContactForm from '@/components/ContactForm';
+import ContactForm from '@/components/ContactForm';
 import Reveal from '@/components/Reveal';
 import CountUp from '@/components/CountUp';
 import Seo from '@/components/Seo';
@@ -1541,6 +1498,48 @@ export default function HomePage() {
                         </div>
                     </Reveal>
                 </div>
+            </section>
+
+            {/* GALLERY */}
+            <section id="gallery" className="scroll-mt-24 bg-muted/30 py-20 sm:py-28">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6">
+                <Reveal>
+                  <SectionHeading kicker="Gallery" title="पार्टी की तस्वीरें" />
+                </Reveal>
+
+                {photos.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {photos.map((photo, index) => {
+                      const url = photoUrl(photo);
+                      if (!url) return null;
+
+                      return (
+                        <Reveal key={photo.id || index} delay={Math.min(index * 0.05, 0.25)}>
+                          <div className="group overflow-hidden rounded-xl border border-border bg-background shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                            <div className="aspect-[4/3] overflow-hidden bg-muted">
+                              <img
+                                src={url}
+                                alt={photo.caption || 'आंदोलन जीवि जनता पार्टी की तस्वीर'}
+                                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                loading="lazy"
+                              />
+                            </div>
+                            {photo.caption && (
+                              <div className="p-4">
+                                <p className="font-medium text-foreground">{photo.caption}</p>
+                              </div>
+                            )}
+                          </div>
+                        </Reveal>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-dashed border-border bg-background p-10 text-center text-muted-foreground">
+                    अभी Gallery में कोई तस्वीर उपलब्ध नहीं है।
+                  </div>
+                )}
+              </div>
             </section>
 
             {/* CONTACT */}
