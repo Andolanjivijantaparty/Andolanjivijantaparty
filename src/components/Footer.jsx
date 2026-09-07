@@ -42,9 +42,9 @@ export default function Footer() {
                 <div>
                     <h3 className="mb-4 font-display text-base text-background/90">संपर्क</h3>
                     <ul className="space-y-2 text-sm text-background/70">
-                        <li>केन्द्रीय कार्यालय: नई दिल्ली, भारत</li>
-                        <li>फोन: +91 98XXXXXX00</li>
-                        <li>ईमेल: sampark@andolanjivijantaparty.in</li>
+                        <li>केन्द्रीय कार्यालय: Lucknow Uttar Pradesh</li>
+                        <li>फोन: +91 8887906098</li>
+                        <li>ईमेल: andolanjivijantaparty@gmail.com</li>
                     </ul>
                 </div>
             </div>
