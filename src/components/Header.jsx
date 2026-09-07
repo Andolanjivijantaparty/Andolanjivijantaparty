@@ -16,6 +16,7 @@ export const NAV_ITEMS = [
     { href: '#issues', label: 'मुद्दे' },
     { href: '#voice', label: 'जनता की आवाज़' },
     { href: '#notice', label: 'सूचना' },
+    { href: '#gallery', label: 'Gallery' },
     { href: '#contact', label: 'संपर्क' },
     { href: '#contact', label: 'हमें संदेश लिखें' },
 ];
