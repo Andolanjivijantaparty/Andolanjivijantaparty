@@ -1502,10 +1502,10 @@ export default function HomePage() {
             lines: ['आंदोलन जीवि जनता पार्टी', 'Lucknow, Uttar Pradesh — 226020']
           }, {
             title: 'फोन',
-            lines: ['+91 not showing', 'सुबह 10 बजे — शाम 6 बजे']
+            lines: ['+91 8887906098', 'सुबह 10 बजे — शाम 6 बजे']
           }, {
             title: 'ईमेल',
-            lines: ['andolanjivijantaparty@gmail.com', 'media@andolanjivijantaparty.in']
+            lines: ['andolanjivijantaparty@gmail.com']
           }].map((c, i) => <Reveal key={c.title} delay={i * 0.08}>
                                 <div className="h-full rounded-lg border border-border bg-card p-6 shadow-sm">
                                     <h3 className="font-display text-lg text-primary">{c.title}</h3>
