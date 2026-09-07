@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/dialog';
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbwahE9tHqsiM_vlcj6XvpWe_ewnO5kUvw3NPbgE3qXAMyF32eeq8EVFivRktajn_QPy/exec';
+  'https://script.google.com/macros/s/AKfycbxvgb7W5O40WpOQiAet-ZC3lUPEWz3MD47YVBPV2KGvmYT5NNjV8iNRNMxw-tjYptkx/exec';
 
 
 function formatDate(value) {
@@ -636,8 +636,10 @@ function GalleryManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
   const [caption, setCaption] = useState('');
+
+  const fileInputRef = useRef(null);
 
   const loadGallery = async () => {
     setLoading(true);
@@ -671,11 +673,27 @@ function GalleryManager() {
     loadGallery();
   }, []);
 
+  const readFileAsDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   const addPhoto = async (e) => {
     e.preventDefault();
 
-    if (!imageUrl.trim()) {
-      setError('कृपया Image URL डालें।');
+    if (!selectedFile) {
+      setError('कृपया पहले फोटो चुनें।');
+      return;
+    }
+
+    if (!selectedFile.type.startsWith('image/')) {
+      setError('कृपया केवल image/photo file चुनें।');
       return;
     }
 
@@ -683,14 +701,22 @@ function GalleryManager() {
     setError('');
 
     try {
+      const imageData = await readFileAsDataURL(selectedFile);
+
       await postData({
         action: 'addGallery',
-        imageUrl: imageUrl.trim(),
+        imageData,
+        fileName: selectedFile.name,
+        mimeType: selectedFile.type,
         caption: caption.trim(),
       });
 
-      setImageUrl('');
+      setSelectedFile(null);
       setCaption('');
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
 
       await loadGallery();
     } catch (error) {
@@ -745,18 +771,26 @@ function GalleryManager() {
 
         <div className="space-y-2">
           <label className="text-sm font-semibold">
-            Image URL *
+            Add Photo *
           </label>
 
-          <Input
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="https://..."
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0] || null;
+              setSelectedFile(file);
+              setError('');
+            }}
+            className="block w-full cursor-pointer rounded-md border border-input bg-background px-3 py-2 text-sm"
           />
 
-          <p className="text-xs text-muted-foreground">
-            फोटो का direct/public image URL डालें।
-          </p>
+          {selectedFile && (
+            <p className="text-sm text-muted-foreground">
+              Selected: {selectedFile.name}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -778,7 +812,7 @@ function GalleryManager() {
           {saving ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
+              Uploading...
             </>
           ) : (
             <>
@@ -820,7 +854,6 @@ function GalleryManager() {
               key={photo.id}
               className="overflow-hidden rounded-xl border border-border bg-card"
             >
-
               {photo.imageUrl && (
                 <img
                   src={photo.imageUrl}
@@ -830,7 +863,6 @@ function GalleryManager() {
               )}
 
               <div className="space-y-3 p-4">
-
                 <p className="text-sm text-muted-foreground">
                   {photo.caption || 'No caption'}
                 </p>
@@ -844,7 +876,6 @@ function GalleryManager() {
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete
                 </Button>
-
               </div>
             </div>
           ))}
@@ -854,7 +885,6 @@ function GalleryManager() {
     </div>
   );
 }
-
 
 /* =========================================================
    CONTACT SUBMISSIONS
