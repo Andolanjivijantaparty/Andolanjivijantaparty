@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, Download } from 'lucide-react';
 
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -7,7 +7,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbxBHwg80L8bkj-UIbWOQvjtsbQMous1QO_Z1I1zqbO_HA0tSLM58sin0rJk6czNaftQ/exec';
+  'https://script.google.com/macros/s/AKfycbwahE9tHqsiM_vlcj6XvpWe_ewnO5kUvw3NPbgE3qXAMyF32eeq8EVFivRktajn_QPy/exec';
 
 export default function MembershipForm() {
   const [form, setForm] = useState({
@@ -19,6 +19,7 @@ export default function MembershipForm() {
 
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle');
+  const [certificate, setCertificate] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,9 +69,10 @@ export default function MembershipForm() {
     }
 
     setStatus('submitting');
+    setCertificate(null);
 
     try {
-      await fetch(API_URL, {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8'
@@ -82,6 +84,17 @@ export default function MembershipForm() {
           city: form.city.trim(),
           reason: form.reason.trim()
         })
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.message || 'Submission failed');
+      }
+
+      setCertificate({
+        number: result.certificateNumber || '',
+        url: result.certificateUrl || ''
       });
 
       setStatus('success');
@@ -146,7 +159,6 @@ export default function MembershipForm() {
             )}
           </div>
 
-
           <div className="space-y-2">
             <Label htmlFor="mobile">मोबाइल नंबर</Label>
 
@@ -167,7 +179,6 @@ export default function MembershipForm() {
             )}
           </div>
 
-
           <div className="space-y-2">
             <Label htmlFor="city">शहर</Label>
 
@@ -186,7 +197,6 @@ export default function MembershipForm() {
               </p>
             )}
           </div>
-
 
           <div className="space-y-2">
             <Label htmlFor="reason">
@@ -209,7 +219,6 @@ export default function MembershipForm() {
             )}
           </div>
 
-
           <Button
             type="submit"
             className="w-full"
@@ -227,16 +236,42 @@ export default function MembershipForm() {
 
           </Button>
 
-
           {status === 'success' && (
-            <div className="flex items-center justify-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 p-3 text-green-700">
-              <CheckCircle2 className="h-5 w-5" />
-              <span className="font-medium">
-                Submitted Successfully!
-              </span>
+            <div className="space-y-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-700">
+
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle2 className="h-5 w-5" />
+
+                <span className="font-medium">
+                  Submitted Successfully!
+                </span>
+              </div>
+
+              {certificate?.number && (
+                <p className="text-center font-medium">
+                  Certificate No.: {certificate.number}
+                </p>
+              )}
+
+              {certificate?.url && (
+                <Button
+                  type="button"
+                  className="w-full"
+                  onClick={() => {
+                    window.open(
+                      certificate.url,
+                      '_blank',
+                      'noopener,noreferrer'
+                    );
+                  }}
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Certificate PDF
+                </Button>
+              )}
+
             </div>
           )}
-
 
           {status === 'error' && (
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-center text-red-600">
