@@ -86,7 +86,18 @@ export default function MembershipForm() {
         })
       });
 
-      const result = await response.json();
+      const text = await response.text();
+
+      console.log('Apps Script Response:', text);
+
+      let result;
+
+      try {
+        result = JSON.parse(text);
+      } catch (parseError) {
+        console.error('Invalid JSON response:', text);
+        throw new Error('Invalid response from server');
+      }
 
       if (!result.success) {
         throw new Error(result.message || 'Submission failed');
@@ -105,10 +116,6 @@ export default function MembershipForm() {
         city: '',
         reason: ''
       });
-
-      setTimeout(() => {
-        setStatus('idle');
-      }, 4000);
 
     } catch (error) {
       console.error('Form submission error:', error);
@@ -224,7 +231,6 @@ export default function MembershipForm() {
             className="w-full"
             disabled={status === 'submitting'}
           >
-
             {status === 'submitting' ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -233,7 +239,6 @@ export default function MembershipForm() {
             ) : (
               'हमसे जुड़ें'
             )}
-
           </Button>
 
           {status === 'success' && (
