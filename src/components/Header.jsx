@@ -47,9 +47,11 @@ export function PartyLogo({ compact = false }) {
             }}
             className="flex items-center gap-3"
         >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary font-display text-xl text-primary-foreground ring-2 ring-accent ring-offset-2 ring-offset-background">
-                अं
-            </span>
+            <img
+                src="/logo.png"
+                alt="आंदोलन जीवि जनता पार्टी"
+                className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-accent ring-offset-2 ring-offset-background"
+            />
 
             {!compact && (
                 <span className="leading-tight">
