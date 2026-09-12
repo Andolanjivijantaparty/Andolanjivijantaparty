@@ -48,7 +48,7 @@ export function PartyLogo({ compact = false }) {
             className="flex items-center gap-3"
         >
             <img
-                src="/logo.png"
+                src={`${import.meta.env.BASE_URL}logo.png`}
                 alt="आंदोलन जीवि जनता पार्टी"
                 className="h-11 w-11 shrink-0 rounded-full object-cover ring-2 ring-accent ring-offset-2 ring-offset-background"
             />
