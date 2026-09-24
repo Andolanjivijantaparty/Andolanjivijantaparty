@@ -15,6 +15,7 @@ export default function Footer() {
                     </div>
                     <p className="max-w-sm text-sm leading-relaxed text-background/70">
                         जनता की आवाज़ को सत्ता तक पहुँचाने का जन-आंदोलन। पारदर्शिता, जवाबदेही और जन-भागीदारी — यही हमारी प्रतिबद्धता है।
+                        Founder-AJJP
                     </p>
                 </div>
                 <div>
