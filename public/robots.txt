@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://andolanjivijantaparty.github.io/Andolanjivijantaparty/sitemap.xml
