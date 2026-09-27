@@ -54,12 +54,7 @@ export function PartyLogo({ compact = false }) {
             />
 
             {!compact && (
-                
-            <span className="block text-[11px] text-muted-foreground">
-        जनता की आवाज़ • जनता का आंदोलन
-    </span>
-</span>
-            <span className="leading-tight">
+             <span className="leading-tight">
     <span className="block font-display text-base text-foreground sm:text-lg">
         आंदोलन जीवि जनता पार्टी
     </span>
@@ -67,6 +62,12 @@ export function PartyLogo({ compact = false }) {
     <span className="block text-xs font-semibold tracking-wide text-primary">
         संस्थापक: Pranshu Tiwari
     </span>
+                
+        <span className="block text-[11px] text-muted-foreground">
+        जनता की आवाज़ • जनता का आंदोलन
+    </span>
+</span>
+        
             )}
         </a>
     );
