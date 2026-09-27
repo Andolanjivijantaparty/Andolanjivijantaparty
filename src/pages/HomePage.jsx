@@ -1304,6 +1304,19 @@ export default function HomePage() {
                                 हमारी पार्टी का हर फैसला मोहल्ला सभाओं और जन-संवाद से गुज़रता है। यहाँ नेता ऊपर से नहीं उतरते —
                                 समुदाय के भीतर से उभरते हैं।
                             </p>
+                          <div className="mt-6 rounded-lg border border-border bg-secondary/40 p-5">
+    <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+        संस्थापक
+    </p>
+
+    <h3 className="mt-1 font-display text-2xl font-bold text-foreground">
+        Pranshu Tiwari
+    </h3>
+
+    <p className="mt-1 text-sm text-muted-foreground">
+        Founder — आंदोलन जीवि जनता पार्टी (AJJP)
+    </p>
+</div>
                         </div>
                         <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border pt-6">
                             <div>
