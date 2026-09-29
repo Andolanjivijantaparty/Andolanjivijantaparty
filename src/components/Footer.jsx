@@ -11,11 +11,11 @@ export default function Footer() {
                         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary font-display text-xl text-primary-foreground">
                             अं
                         </span>
-                        <span className="font-display text-lg">आंदोलन जीवि जनता पार्टी</span>
+                        <span className="font-display text-lg">आंदोलन जीवि जनता पार्टी AJJP </span>
                     </div>
                     <p className="max-w-sm text-sm leading-relaxed text-background/70">
                         जनता की आवाज़ को सत्ता तक पहुँचाने का जन-आंदोलन। पारदर्शिता, जवाबदेही और जन-भागीदारी — यही हमारी प्रतिबद्धता है।
-                        Founder-AJJP
+                        Founder-Pranshu Tiwari (AJJP)
                     </p>
                 </div>
                 <div>
@@ -51,8 +51,8 @@ export default function Footer() {
             </div>
             <div className="border-t border-background/15">
                 <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-background/60 sm:flex-row sm:px-6">
-                    <p>© {new Date().getFullYear()} आंदोलन जीवि जनता पार्टी। सर्वाधिकार सुरक्षित।</p>
-                    <p>जनता की आवाज़ • जनता का आंदोलन • जनता का हक़</p>
+                    <p>© {new Date().getFullYear()} आंदोलन जीवि जनता पार्टी AJJP । सर्वाधिकार सुरक्षित।</p>
+                    <p> AJJP जनता की आवाज़ • जनता का आंदोलन • जनता का हक़</p>
                 </div>
             </div>
         </footer>
