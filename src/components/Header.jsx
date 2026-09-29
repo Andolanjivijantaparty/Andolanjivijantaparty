@@ -60,11 +60,14 @@ export function PartyLogo({ compact = false }) {
     </span>
 
     <span className="block text-xs font-semibold tracking-wide text-primary">
-        संस्थापक: Pranshu Tiwari
+        Founder : Pranshu Tiwari
+        
     </span>
                 
         <span className="block text-[11px] text-muted-foreground">
+            
          AJJP (Janta ki awaj)
+            
     </span>
 </span>
         
@@ -183,7 +186,7 @@ export default function Header() {
                                             }
                                         >
                                             <Users className="mr-2 h-4 w-4" />
-                                            हमसे जुड़ें
+                                            Join This Party
                                         </a>
                                     </Button>
                                 </SheetClose>
