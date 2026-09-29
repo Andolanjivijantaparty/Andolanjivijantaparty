@@ -64,7 +64,7 @@ export function PartyLogo({ compact = false }) {
     </span>
                 
         <span className="block text-[11px] text-muted-foreground">
-        जनता की आवाज़ • जनता का आंदोलन
+         AJJP Janta ki awaj
     </span>
 </span>
         
