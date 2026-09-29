@@ -64,7 +64,7 @@ export function PartyLogo({ compact = false }) {
     </span>
                 
         <span className="block text-[11px] text-muted-foreground">
-         AJJP Janta ki awaj
+         AJJP (Janta ki awaj)
     </span>
 </span>
         
