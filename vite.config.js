@@ -369,7 +369,7 @@ logger.error = (msg, options) => {
 }
 
 export default defineConfig({
-base: '/Andolanjivijantaparty/',
+base: '/',
 	
 	optimizeDeps: {
 		include: allDeps,
