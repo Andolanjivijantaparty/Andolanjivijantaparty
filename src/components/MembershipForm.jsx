@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CheckCircle2, Loader2, Download } from 'lucide-react';
 
 import { Button } from './ui/button';
@@ -20,6 +20,16 @@ export default function MembershipForm() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle');
   const [certificate, setCertificate] = useState(null);
+
+  const pollingRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +71,86 @@ export default function MembershipForm() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const startCertificatePolling = (certificateNumber) => {
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current);
+    }
+
+    const checkCertificate = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}?action=getCertificate&certificateNumber=${encodeURIComponent(
+            certificateNumber
+          )}`,
+          {
+            method: 'GET',
+            cache: 'no-store'
+          }
+        );
+
+        const text = await response.text();
+
+        let result;
+
+        try {
+          result = JSON.parse(text);
+        } catch {
+          return;
+        }
+
+        if (
+          result.success &&
+          result.ready &&
+          result.certificateUrl
+        ) {
+          setCertificate((prev) => ({
+            ...prev,
+            url: result.certificateUrl
+          }));
+
+          setStatus('certificate-ready');
+
+          if (pollingRef.current) {
+            clearInterval(pollingRef.current);
+            pollingRef.current = null;
+          }
+        }
+      } catch (error) {
+        console.error('Certificate status error:', error);
+      }
+    };
+
+    checkCertificate();
+
+    pollingRef.current = setInterval(checkCertificate, 2000);
+  };
+
+  const generateCertificate = (certificateNumber) => {
+    /*
+      IMPORTANT:
+      Certificate generation is deliberately NOT awaited here.
+      This allows the success message to appear immediately.
+    */
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify({
+        action: 'generateCertificate',
+        certificateNumber
+      })
+    })
+      .then((response) => response.text())
+      .then((text) => {
+        console.log('Certificate generation response:', text);
+      })
+      .catch((error) => {
+        console.error('Certificate generation error:', error);
+      });
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -94,8 +184,7 @@ export default function MembershipForm() {
 
       try {
         result = JSON.parse(text);
-      } catch (parseError) {
-        console.error('Invalid JSON response:', text);
+      } catch {
         throw new Error('Invalid response from server');
       }
 
@@ -103,9 +192,16 @@ export default function MembershipForm() {
         throw new Error(result.message || 'Submission failed');
       }
 
+      const certificateNumber = result.certificateNumber || '';
+
+      /*
+        MEMBER IS ALREADY SAVED.
+        Show success immediately.
+      */
+
       setCertificate({
-        number: result.certificateNumber || '',
-        url: result.certificateUrl || ''
+        number: certificateNumber,
+        url: ''
       });
 
       setStatus('success');
@@ -116,6 +212,19 @@ export default function MembershipForm() {
         city: '',
         reason: ''
       });
+
+      /*
+        Start checking certificate status.
+      */
+      if (certificateNumber) {
+        startCertificatePolling(certificateNumber);
+
+        /*
+          Start certificate creation separately.
+          DO NOT await this.
+        */
+        generateCertificate(certificateNumber);
+      }
 
     } catch (error) {
       console.error('Form submission error:', error);
@@ -258,6 +367,30 @@ export default function MembershipForm() {
                 </p>
               )}
 
+              <p className="text-center text-sm">
+                Certificate तैयार किया जा रहा है...
+              </p>
+
+            </div>
+          )}
+
+          {status === 'certificate-ready' && (
+            <div className="space-y-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-700">
+
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle2 className="h-5 w-5" />
+
+                <span className="font-medium">
+                  Certificate Ready!
+                </span>
+              </div>
+
+              {certificate?.number && (
+                <p className="text-center font-medium">
+                  Certificate No.: {certificate.number}
+                </p>
+              )}
+
               {certificate?.url && (
                 <Button
                   type="button"
@@ -271,7 +404,7 @@ export default function MembershipForm() {
                   }}
                 >
                   <Download className="mr-2 h-4 w-4" />
-                  Download Certificate PDF
+                  Download Certificate
                 </Button>
               )}
 
