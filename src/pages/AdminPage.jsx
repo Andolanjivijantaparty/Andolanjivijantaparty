@@ -631,29 +631,31 @@ function NoticeManager() {
    PHOTO GALLERY
    ========================================================= */
 
+
 function GalleryManager() {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [caption, setCaption] = useState('');
+  const [uploadProgress, setUploadProgress] = useState('');
 
   const loadGallery = async () => {
     setLoading(true);
-    setError('');
 
     try {
       const response = await fetch(`${API_URL}?action=getGallery`);
       const result = await response.json();
 
       if (!result.success) {
-        throw new Error(result.message || 'Failed');
+        throw new Error(result.message || 'Gallery load failed');
       }
 
       setPhotos(Array.isArray(result.photos) ? result.photos : []);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       setError('Gallery लोड नहीं हो पाई।');
     } finally {
       setLoading(false);
@@ -667,61 +669,135 @@ function GalleryManager() {
   const readFileAsDataURL = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
-
       reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject(new Error('Photo read नहीं हो पाई।'));
-
+      reader.onerror = () => reject(new Error(
+        `${file.name}: फोटो पढ़ी नहीं जा सकी।`
+      ));
       reader.readAsDataURL(file);
     });
 
-  const addPhoto = async (e) => {
-    e.preventDefault();
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    setError('');
+    setSuccess('');
 
-    if (!selectedFile) {
-      setError('कृपया Photo चुनें।');
+    if (files.length > 30) {
+      setSelectedFiles([]);
+      setError('एक बार में अधिकतम 30 फोटो चुनें।');
+      e.target.value = '';
       return;
     }
 
-    if (!selectedFile.type.startsWith('image/')) {
-      setError('कृपया केवल image file चुनें।');
+    const invalid = files.find((file) => {
+      return (
+        !['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type) ||
+        file.size > 4 * 1024 * 1024
+      );
+    });
+
+    if (invalid) {
+      setSelectedFiles([]);
+      setError(
+        `${invalid.name}: केवल JPG, PNG, WEBP या GIF फोटो चुनें। हर फोटो 4 MB या उससे छोटी होनी चाहिए।`
+      );
+      e.target.value = '';
+      return;
+    }
+
+    setSelectedFiles(files);
+  };
+
+  const addPhotos = async (e) => {
+    e.preventDefault();
+
+    if (selectedFiles.length === 0) {
+      setError('कृपया एक या अधिक फोटो चुनें।');
       return;
     }
 
     setSaving(true);
     setError('');
+    setSuccess('');
+
+    let uploadedCount = 0;
+    const failedFiles = [];
 
     try {
-      const imageData = await readFileAsDataURL(selectedFile);
+      const batchSize = 3;
+      const totalBatches = Math.ceil(selectedFiles.length / batchSize);
 
-      await postData({
-        action: 'addGallery',
-        imageData,
-        fileName: selectedFile.name,
-        mimeType: selectedFile.type,
-        caption: caption.trim(),
-      });
+      for (let i = 0; i < selectedFiles.length; i += batchSize) {
+        const batch = selectedFiles.slice(i, i + batchSize);
+        const batchNumber = Math.floor(i / batchSize) + 1;
 
-      setSelectedFile(null);
-      setCaption('');
+        setUploadProgress(
+          `बैच ${batchNumber}/${totalBatches} अपलोड हो रहा है...`
+        );
 
+        try {
+          const images = await Promise.all(
+            batch.map(async (file) => ({
+              imageData: await readFileAsDataURL(file),
+              fileName: file.name,
+              mimeType: file.type,
+              caption: caption.trim(),
+            }))
+          );
+
+          const result = await postData({
+            action: 'addGalleryBulk',
+            images,
+          });
+
+          uploadedCount += Number(result.uploadedCount || 0);
+
+          if (Array.isArray(result.failed)) {
+            result.failed.forEach((item) => {
+              failedFiles.push(
+                `${item.fileName}: ${item.message}`
+              );
+            });
+          }
+        } catch (batchError) {
+          batch.forEach((file) => {
+            failedFiles.push(`${file.name}: ${batchError.message}`);
+          });
+        }
+      }
+
+      setSelectedFiles([]);
       const input = document.getElementById('gallery-photo-input');
+
       if (input) {
         input.value = '';
       }
 
       await loadGallery();
-    } catch (error) {
-      console.error(error);
-      setError(error.message || 'Photo save नहीं हो पाई।');
+
+      if (failedFiles.length > 0) {
+        setError(
+          `${uploadedCount} फोटो अपलोड हुईं। ${failedFiles.length} फोटो अपलोड नहीं हुईं: ` +
+          failedFiles.join(' | ')
+        );
+      } else {
+        setSuccess(`${uploadedCount} फोटो सफलतापूर्वक अपलोड हो गईं।`);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'फोटो अपलोड नहीं हो पाईं।');
     } finally {
       setSaving(false);
+      setUploadProgress('');
     }
   };
 
   const removePhoto = async (id) => {
-    if (!window.confirm('क्या आप यह photo delete करना चाहते हैं?')) {
+    if (!window.confirm('क्या आप यह फोटो डिलीट करना चाहते हैं?')) {
       return;
     }
+
+    setError('');
+    setSuccess('');
 
     try {
       await postData({
@@ -730,9 +806,10 @@ function GalleryManager() {
       });
 
       await loadGallery();
-    } catch (error) {
-      console.error(error);
-      setError('Photo delete नहीं हो पाई।');
+      setSuccess('फोटो डिलीट हो गई।');
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'फोटो डिलीट नहीं हो पाई।');
     }
   };
 
@@ -742,20 +819,25 @@ function GalleryManager() {
         <h2 className="font-display text-2xl text-foreground">
           Photo Gallery
         </h2>
-
         <p className="mt-1 text-sm text-muted-foreground">
-          Website Gallery में फोटो जोड़ें।
+          एक साथ कई फोटो वेबसाइट की Gallery में जोड़ें।
         </p>
       </div>
 
       {error && (
-        <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-600">
+        <div className="break-words rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-600">
           {error}
         </div>
       )}
 
+      {success && (
+        <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-700">
+          {success}
+        </div>
+      )}
+
       <form
-        onSubmit={addPhoto}
+        onSubmit={addPhotos}
         className="rounded-xl border border-border bg-card p-5 shadow-sm"
       >
         <div className="space-y-5">
@@ -764,25 +846,52 @@ function GalleryManager() {
               htmlFor="gallery-photo-input"
               className="mb-2 block text-sm font-semibold"
             >
-              Add Photo
+              Select Photos
             </label>
 
             <Input
               id="gallery-photo-input"
               type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0] || null;
-                setSelectedFile(file);
-                setError('');
-              }}
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              multiple
+              onChange={handleFileChange}
               disabled={saving}
             />
 
-            {selectedFile && (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Selected: {selectedFile.name}
-              </p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              अधिकतम 30 फोटो चुनें। हर फोटो 4 MB तक हो सकती है।
+              JPG, PNG, WEBP और GIF समर्थित हैं।
+            </p>
+
+            {selectedFiles.length > 0 && (
+              <div className="mt-3 rounded-lg bg-secondary/50 p-3">
+                <p className="mb-2 text-sm font-semibold">
+                  {selectedFiles.length} फोटो चुनी गईं
+                </p>
+
+                <ul className="max-h-40 space-y-1 overflow-y-auto text-sm text-muted-foreground">
+                  {selectedFiles.map((file, index) => (
+                    <li key={`${file.name}-${index}`}>
+                      {index + 1}. {file.name}
+                    </li>
+                  ))}
+                </ul>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="mt-3"
+                  disabled={saving}
+                  onClick={() => {
+                    setSelectedFiles([]);
+                    const input = document.getElementById('gallery-photo-input');
+                    if (input) input.value = '';
+                  }}
+                >
+                  चयन हटाएँ
+                </Button>
+              </div>
             )}
           </div>
 
@@ -798,12 +907,21 @@ function GalleryManager() {
               id="gallery-caption"
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
-              placeholder="Photo caption"
+              placeholder="फोटो का विवरण"
               disabled={saving}
             />
           </div>
 
-          <Button type="submit" disabled={saving || !selectedFile}>
+          {uploadProgress && (
+            <p className="text-sm font-semibold text-primary">
+              {uploadProgress}
+            </p>
+          )}
+
+          <Button
+            type="submit"
+            disabled={saving || selectedFiles.length === 0}
+          >
             {saving ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -812,12 +930,29 @@ function GalleryManager() {
             ) : (
               <>
                 <Plus className="mr-2 h-4 w-4" />
-                Add Photo
+                Upload {selectedFiles.length || ''} Photos
               </>
             )}
           </Button>
         </div>
       </form>
+
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-lg font-bold">
+          Existing Photos ({photos.length})
+        </h3>
+
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={loadGallery}
+          disabled={loading || saving}
+        >
+          <RefreshCw className="mr-2 h-4 w-4" />
+          Refresh
+        </Button>
+      </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
@@ -825,7 +960,7 @@ function GalleryManager() {
         </div>
       ) : photos.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border p-10 text-center text-muted-foreground">
-          अभी कोई photo नहीं है।
+          अभी कोई फोटो नहीं है।
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -837,8 +972,9 @@ function GalleryManager() {
               {photo.imageUrl && (
                 <img
                   src={photo.imageUrl}
-                  alt={photo.caption || 'Gallery photo'}
+                  alt={photo.caption || 'AJJP Gallery photo'}
                   className="h-52 w-full object-cover"
+                  loading="lazy"
                 />
               )}
 
@@ -848,10 +984,12 @@ function GalleryManager() {
                 </p>
 
                 <Button
+                  type="button"
                   variant="outline"
                   size="sm"
                   className="w-full text-red-600"
                   onClick={() => removePhoto(photo.id)}
+                  disabled={saving}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete
