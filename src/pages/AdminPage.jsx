@@ -636,7 +636,7 @@ function GalleryManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [caption, setCaption] = useState('');
 
   const loadGallery = async () => {
